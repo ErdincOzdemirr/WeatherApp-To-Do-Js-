@@ -2,15 +2,15 @@ const container = document.querySelector(".container");
 const search = document.querySelector(".search-box button");
 const weatherBox = document.querySelector(".weather-box");
 const weatherDetails = document.querySelector(".weather-details");
-const hata = document.querySelector(".not-found");
+const error = document.querySelector(".not-found");
 
 search.addEventListener("click", () => {
   const ApiKey = "93bbbf1a54364548f7080778169453da";
-  const sehir = document.querySelector(".search-box input").value;
+  const city = document.querySelector(".search-box input").value;
 
-  if (sehir === "") return;
+  if (city === "") return;
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${sehir}&lang=tr&units=metric&appid=${ApiKey}`
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=tr&units=metric&appid=${ApiKey}`
   )
     .then((response) => response.json())
     .then((json) => {
@@ -18,44 +18,44 @@ search.addEventListener("click", () => {
         container.style.height = "420px";
         weatherBox.style.display = "none";
         weatherDetails.style.display = "none";
-        hata.style.display = "block";
-        hata.classList.add("fadeIn");
+        error.style.display = "block";
+        error.classList.add("fadeIn");
         return;
       }
 
-      hata.style.display = "none";
-      hata.classList.remove("fadeIn");
+      error.style.display = "none";
+      error.classList.remove("fadeIn");
 
-      const resim = document.querySelector(".weather-box img");
-      const sicaklik = document.querySelector(".weather-box .temperature");
-      const aciklama = document.querySelector(".weather-box .description");
-      const nem = document.querySelector(".weather-details .humidity span");
-      const ruzgar = document.querySelector(".weather-details .wind span");
+      const image = document.querySelector(".weather-box img");
+      const temperatures = document.querySelector(".weather-box .temperature");
+      const descriptions = document.querySelector(".weather-box .description");
+      const humidities = document.querySelector(".weather-details .humidity span");
+      const winds = document.querySelector(".weather-details .wind span");
 
       switch (json.weather[0].main) {
         case "Clear":
-          resim.src = "images/clear.png";
+          image.src = "images/clear.png";
           break;
         case "Rain":
-          resim.src = "images/rain.png";
+          image.src = "images/rain.png";
           break;
         case "Snow":
-          resim.src = "images/snow.png";
+          image.src = "images/snow.png";
           break;
         case "Clouds":
-          resim.src = "images/clouds.png";
+          image.src = "images/clouds.png";
           break;
         case "Haze":
-          resim.src = "images/haze.png";
+          image.src = "images/haze.png";
           break;
         default:
-          resim.src = "";
+          image.src = "";
       }
 
-      sicaklik.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
-      aciklama.innerHTML = `${json.weather[0].description}`;
-      nem.innerHTML = `%${json.main.humidity}`;
-      ruzgar.innerHTML = `${json.wind.speed} km/s`;
+      temperatures.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
+      descriptions.innerHTML = `${json.weather[0].description}`;
+      humidities.innerHTML = `%${json.main.humidity}`;
+      winds.innerHTML = `${json.wind.speed} km/s`;
 
       weatherBox.style.display = "";
       weatherDetails.style.display = "";
